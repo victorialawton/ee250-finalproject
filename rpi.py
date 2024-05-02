@@ -2,6 +2,7 @@ import requests
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
+import time
 
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate('airquality-7ed35-firebase-adminsdk-wfkbr-9a0fc8480e.json')
@@ -30,8 +31,14 @@ city = 'Los Angeles'
 state = 'California'
 country = 'USA'
 
-# Fetch and send data
-data = fetch_air_quality(city, state, country, api_key)
-if data:
-    send_data_to_firebase(data)
-    print("Data sent to Firebase successfully!")
+# Main function to run the data collection
+def main():
+    while True:
+        data = fetch_air_quality(city, state, country, api_key)
+        if data:
+            send_data_to_firebase(data)
+            print("Data sent to Firebase successfully!")
+        time.sleep(13)  # Sleep for 12 minutes to stay within API limit
+
+if __name__ == "__main__":
+    main()
